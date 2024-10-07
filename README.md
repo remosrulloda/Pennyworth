@@ -7,8 +7,6 @@
 
 - **Custom Rules for Folder Organization:** 
   - Set different rules for any folder to match your workflow.
-- **Source-Specific Sorting:**
-  - Organize files downloaded from specific websites into designated folders.
 - **File Name-Based Rules:**
   - Sort files based on name patterns, such as:
     - Starts with a specific string
@@ -21,7 +19,7 @@
 
 - Python 3.x
 - Required Libraries:
-  - (List any specific Python libraries your app uses, e.g., `os`, `shutil`, `requests`, etc.)
+  - PySide6
 
 ## Installation
 
