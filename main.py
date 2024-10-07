@@ -1,12 +1,19 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu
 from PySide6.QtGui import QIcon, QAction
+from MainWindow import Ui_MainWindow
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        super().__init__()
+        super(MainWindow, self).__init__()
+
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+        self.initUI()
+    
+    def initUI(self):
         self.setWindowTitle("Pennyworth")
-        self.setGeometry(100, 100, 300, 200)
+        self.setGeometry(100, 100, 1000, 600)
         self.setWindowIcon(QIcon("icon.png"))  
 
 class TrayApp(QApplication):

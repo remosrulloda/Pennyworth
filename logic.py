@@ -3,11 +3,11 @@ import shutil, os
 from pathlib import Path
 
 source = Path('/home/remo/Downloads')
-dest = '/home/remo/Sync/Fall 24/ics45j/Lectures'
+dest = '/home/remo/Sync/Fall 24/cs121/lectures'
 
-inputStr = input('File starts with: ')
+inputStr = input('File contains: ')
 
-fileResults = list(source.glob(f'{inputStr}*'))
+fileResults = list(source.glob(f'*{inputStr}*'))
 
 for file in fileResults:
     shutil.move(file, dest)
