@@ -1,8 +1,11 @@
 import sys
 
-
-from PySide6.QtCore import QSize, Qt
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
+    QApplication, 
+    QMainWindow, 
+    QLabel
+)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -10,16 +13,20 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle('Pennyworth')
 
-        button = QPushButton("Press Me!")
+        widget = QLabel("File Rules")
+        font = widget.font()
+        font.setPointSize(24)
+        widget.setFont(font)
+        widget.setAlignment(Qt.AlignLeft | Qt.AlignTop)
 
-        self.setFixedSize(QSize(900, 500))
+        self.setCentralWidget(widget)
 
-        self.setCentralWidget(button)
 
 
 app = QApplication([])
 
 window = MainWindow()
+window.resize(1000, 600)
 window.show()
 
 app.exec()
