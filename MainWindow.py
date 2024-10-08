@@ -44,34 +44,44 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.addFolderBtn)
 
-        self.folderView = QListView(self.centralwidget)
-        self.folderView.setObjectName(u"folderView")
+        self.folderViewer = QListView(self.centralwidget)
+        self.folderViewer.setObjectName(u"folderViewer")
 
-        self.verticalLayout.addWidget(self.folderView)
+        self.verticalLayout.addWidget(self.folderViewer)
 
 
         self.horizontalLayout.addLayout(self.verticalLayout)
 
-        self.ruleViewer = QVBoxLayout()
-        self.ruleViewer.setObjectName(u"ruleViewer")
+        self.ruleLayout = QVBoxLayout()
+        self.ruleLayout.setObjectName(u"ruleLayout")
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setFont(font)
 
-        self.ruleViewer.addWidget(self.label)
+        self.ruleLayout.addWidget(self.label)
+
+        self.ruleBtnViewer = QHBoxLayout()
+        self.ruleBtnViewer.setObjectName(u"ruleBtnViewer")
+        self.deleteRuleBtn = QPushButton(self.centralwidget)
+        self.deleteRuleBtn.setObjectName(u"deleteRuleBtn")
+
+        self.ruleBtnViewer.addWidget(self.deleteRuleBtn)
 
         self.addRuleBtn = QPushButton(self.centralwidget)
         self.addRuleBtn.setObjectName(u"addRuleBtn")
 
-        self.ruleViewer.addWidget(self.addRuleBtn)
-
-        self.ruleView = QListWidget(self.centralwidget)
-        self.ruleView.setObjectName(u"ruleView")
-
-        self.ruleViewer.addWidget(self.ruleView)
+        self.ruleBtnViewer.addWidget(self.addRuleBtn)
 
 
-        self.horizontalLayout.addLayout(self.ruleViewer)
+        self.ruleLayout.addLayout(self.ruleBtnViewer)
+
+        self.ruleViewer = QListWidget(self.centralwidget)
+        self.ruleViewer.setObjectName(u"ruleViewer")
+
+        self.ruleLayout.addWidget(self.ruleViewer)
+
+
+        self.horizontalLayout.addLayout(self.ruleLayout)
 
         self.ruleEditor = QGroupBox(self.centralwidget)
         self.ruleEditor.setObjectName(u"ruleEditor")
@@ -152,6 +162,20 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.thenGroupBox)
 
+        self.applyViewer = QHBoxLayout()
+        self.applyViewer.setObjectName(u"applyViewer")
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.applyViewer.addItem(self.horizontalSpacer)
+
+        self.applyBtn = QPushButton(self.ruleEditor)
+        self.applyBtn.setObjectName(u"applyBtn")
+
+        self.applyViewer.addWidget(self.applyBtn)
+
+
+        self.verticalLayout_3.addLayout(self.applyViewer)
+
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_3.addItem(self.verticalSpacer)
@@ -174,7 +198,8 @@ class Ui_MainWindow(object):
         self.folderLabel.setText(QCoreApplication.translate("MainWindow", u"Folders", None))
         self.addFolderBtn.setText(QCoreApplication.translate("MainWindow", u"Add Folder", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Rules", None))
-        self.addRuleBtn.setText(QCoreApplication.translate("MainWindow", u"New Rule", None))
+        self.deleteRuleBtn.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
+        self.addRuleBtn.setText(QCoreApplication.translate("MainWindow", u"Add", None))
         self.ruleNameLabel.setText(QCoreApplication.translate("MainWindow", u"Rule name:", None))
         self.ifLabel.setText(QCoreApplication.translate("MainWindow", u"If any of the following conditions are met:", None))
         self.ruleComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"File", None))
@@ -189,5 +214,6 @@ class Ui_MainWindow(object):
 
         self.toFolderLabel.setText(QCoreApplication.translate("MainWindow", u"to folder:", None))
         self.destBtn.setText(QCoreApplication.translate("MainWindow", u"Choose Folder", None))
+        self.applyBtn.setText(QCoreApplication.translate("MainWindow", u"Apply", None))
     # retranslateUi
 

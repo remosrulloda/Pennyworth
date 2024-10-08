@@ -37,12 +37,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QListView" name="folderView"/>
+       <widget class="QListView" name="folderViewer"/>
       </item>
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="ruleViewer">
+     <layout class="QVBoxLayout" name="ruleLayout">
       <item>
        <widget class="QLabel" name="label">
         <property name="font">
@@ -56,14 +56,25 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="addRuleBtn">
-        <property name="text">
-         <string>New Rule</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="ruleBtnViewer">
+        <item>
+         <widget class="QPushButton" name="deleteRuleBtn">
+          <property name="text">
+           <string>Delete</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="addRuleBtn">
+          <property name="text">
+           <string>Add</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
-       <widget class="QListWidget" name="ruleView"/>
+       <widget class="QListWidget" name="ruleViewer"/>
       </item>
      </layout>
     </item>
@@ -168,6 +179,30 @@
           </item>
          </layout>
         </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="applyViewer">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="applyBtn">
+           <property name="text">
+            <string>Apply</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <spacer name="verticalSpacer">

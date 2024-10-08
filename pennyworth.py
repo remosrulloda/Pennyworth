@@ -30,7 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.initUI()
         self.model = FolderModel()
-        self.folderView.setModel(self.model)
+        self.folderViewer.setModel(self.model)
 
         #Connect the buttons
         self.addFolderBtn.pressed.connect(self.addFolder)
@@ -52,15 +52,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.model.folders.append(folder)
             self.model.layoutChanged.emit()
     
-    def moveFiles(self):
-        if self.folder:
-            move_files()
-    
-
-
-
-
-        
+    def addRule(self):
+        """
+        Adds a rule to the ruleViewer
+        """
+            
 
 if __name__ == "__main__":
     app = QApplication([])
