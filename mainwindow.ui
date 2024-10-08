@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>780</width>
-    <height>398</height>
+    <width>1654</width>
+    <height>845</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="ruleViewer">
       <item>
        <widget class="QLabel" name="label">
         <property name="font">
@@ -56,7 +56,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="addRule">
+       <widget class="QPushButton" name="addRuleBtn">
         <property name="text">
          <string>New Rule</string>
         </property>
@@ -68,18 +68,122 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QListWidget" name="ruleEditorView">
-        <property name="minimumSize">
-         <size>
-          <width>460</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QGroupBox" name="ruleEditor">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QHBoxLayout" name="ruleNameViewer">
+         <item>
+          <widget class="QLabel" name="ruleNameLabel">
+           <property name="text">
+            <string>Rule name:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="ruleNameEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="ifLabel">
+         <property name="text">
+          <string>If any of the following conditions are met:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="ifViewer">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QComboBox" name="ruleComboBox">
+            <item>
+             <property name="text">
+              <string>File</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Extension</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="verbComboBox">
+            <item>
+             <property name="text">
+              <string>contains</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>is</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>begins with</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEdit"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="thenLabel">
+         <property name="text">
+          <string>Do the following to the matched folder:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="thenGroupBox">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QComboBox" name="actionComboBox">
+            <item>
+             <property name="text">
+              <string>Move</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="toFolderLabel">
+            <property name="text">
+             <string>to folder:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="destBtn">
+            <property name="text">
+             <string>Choose Folder</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>

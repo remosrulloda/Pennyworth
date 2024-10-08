@@ -15,15 +15,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QListView,
-    QListWidget, QListWidgetItem, QMainWindow, QPushButton,
-    QSizePolicy, QStatusBar, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QGroupBox, QHBoxLayout,
+    QLabel, QLineEdit, QListView, QListWidget,
+    QListWidgetItem, QMainWindow, QPushButton, QSizePolicy,
+    QSpacerItem, QStatusBar, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(780, 398)
+        MainWindow.resize(1654, 845)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -51,37 +52,112 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addLayout(self.verticalLayout)
 
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.ruleViewer = QVBoxLayout()
+        self.ruleViewer.setObjectName(u"ruleViewer")
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setFont(font)
 
-        self.verticalLayout_2.addWidget(self.label)
+        self.ruleViewer.addWidget(self.label)
 
-        self.addRule = QPushButton(self.centralwidget)
-        self.addRule.setObjectName(u"addRule")
+        self.addRuleBtn = QPushButton(self.centralwidget)
+        self.addRuleBtn.setObjectName(u"addRuleBtn")
 
-        self.verticalLayout_2.addWidget(self.addRule)
+        self.ruleViewer.addWidget(self.addRuleBtn)
 
         self.ruleView = QListWidget(self.centralwidget)
         self.ruleView.setObjectName(u"ruleView")
 
-        self.verticalLayout_2.addWidget(self.ruleView)
+        self.ruleViewer.addWidget(self.ruleView)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout_2)
+        self.horizontalLayout.addLayout(self.ruleViewer)
 
-        self.verticalLayout_3 = QVBoxLayout()
+        self.ruleEditor = QGroupBox(self.centralwidget)
+        self.ruleEditor.setObjectName(u"ruleEditor")
+        self.verticalLayout_3 = QVBoxLayout(self.ruleEditor)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.ruleEditorView = QListWidget(self.centralwidget)
-        self.ruleEditorView.setObjectName(u"ruleEditorView")
-        self.ruleEditorView.setMinimumSize(QSize(460, 0))
+        self.ruleNameViewer = QHBoxLayout()
+        self.ruleNameViewer.setObjectName(u"ruleNameViewer")
+        self.ruleNameLabel = QLabel(self.ruleEditor)
+        self.ruleNameLabel.setObjectName(u"ruleNameLabel")
 
-        self.verticalLayout_3.addWidget(self.ruleEditorView)
+        self.ruleNameViewer.addWidget(self.ruleNameLabel)
+
+        self.ruleNameEdit = QLineEdit(self.ruleEditor)
+        self.ruleNameEdit.setObjectName(u"ruleNameEdit")
+
+        self.ruleNameViewer.addWidget(self.ruleNameEdit)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout_3)
+        self.verticalLayout_3.addLayout(self.ruleNameViewer)
+
+        self.ifLabel = QLabel(self.ruleEditor)
+        self.ifLabel.setObjectName(u"ifLabel")
+
+        self.verticalLayout_3.addWidget(self.ifLabel)
+
+        self.ifViewer = QGroupBox(self.ruleEditor)
+        self.ifViewer.setObjectName(u"ifViewer")
+        self.horizontalLayout_3 = QHBoxLayout(self.ifViewer)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.ruleComboBox = QComboBox(self.ifViewer)
+        self.ruleComboBox.addItem("")
+        self.ruleComboBox.addItem("")
+        self.ruleComboBox.setObjectName(u"ruleComboBox")
+
+        self.horizontalLayout_3.addWidget(self.ruleComboBox)
+
+        self.verbComboBox = QComboBox(self.ifViewer)
+        self.verbComboBox.addItem("")
+        self.verbComboBox.addItem("")
+        self.verbComboBox.addItem("")
+        self.verbComboBox.setObjectName(u"verbComboBox")
+
+        self.horizontalLayout_3.addWidget(self.verbComboBox)
+
+        self.lineEdit = QLineEdit(self.ifViewer)
+        self.lineEdit.setObjectName(u"lineEdit")
+
+        self.horizontalLayout_3.addWidget(self.lineEdit)
+
+
+        self.verticalLayout_3.addWidget(self.ifViewer)
+
+        self.thenLabel = QLabel(self.ruleEditor)
+        self.thenLabel.setObjectName(u"thenLabel")
+
+        self.verticalLayout_3.addWidget(self.thenLabel)
+
+        self.thenGroupBox = QGroupBox(self.ruleEditor)
+        self.thenGroupBox.setObjectName(u"thenGroupBox")
+        self.horizontalLayout_2 = QHBoxLayout(self.thenGroupBox)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.actionComboBox = QComboBox(self.thenGroupBox)
+        self.actionComboBox.addItem("")
+        self.actionComboBox.setObjectName(u"actionComboBox")
+
+        self.horizontalLayout_2.addWidget(self.actionComboBox)
+
+        self.toFolderLabel = QLabel(self.thenGroupBox)
+        self.toFolderLabel.setObjectName(u"toFolderLabel")
+
+        self.horizontalLayout_2.addWidget(self.toFolderLabel)
+
+        self.destBtn = QPushButton(self.thenGroupBox)
+        self.destBtn.setObjectName(u"destBtn")
+
+        self.horizontalLayout_2.addWidget(self.destBtn)
+
+
+        self.verticalLayout_3.addWidget(self.thenGroupBox)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer)
+
+
+        self.horizontalLayout.addWidget(self.ruleEditor)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusBar = QStatusBar(MainWindow)
@@ -98,6 +174,20 @@ class Ui_MainWindow(object):
         self.folderLabel.setText(QCoreApplication.translate("MainWindow", u"Folders", None))
         self.addFolderBtn.setText(QCoreApplication.translate("MainWindow", u"Add Folder", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Rules", None))
-        self.addRule.setText(QCoreApplication.translate("MainWindow", u"New Rule", None))
+        self.addRuleBtn.setText(QCoreApplication.translate("MainWindow", u"New Rule", None))
+        self.ruleNameLabel.setText(QCoreApplication.translate("MainWindow", u"Rule name:", None))
+        self.ifLabel.setText(QCoreApplication.translate("MainWindow", u"If any of the following conditions are met:", None))
+        self.ruleComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"File", None))
+        self.ruleComboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Extension", None))
+
+        self.verbComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"contains", None))
+        self.verbComboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"is", None))
+        self.verbComboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"begins with", None))
+
+        self.thenLabel.setText(QCoreApplication.translate("MainWindow", u"Do the following to the matched folder:", None))
+        self.actionComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Move", None))
+
+        self.toFolderLabel.setText(QCoreApplication.translate("MainWindow", u"to folder:", None))
+        self.destBtn.setText(QCoreApplication.translate("MainWindow", u"Choose Folder", None))
     # retranslateUi
 

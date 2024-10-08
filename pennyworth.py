@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QIcon, QAction
 from MainWindow import Ui_MainWindow
+from file_mover import move_files
 
 class FolderModel(QAbstractListModel):
     def __init__(self, folders=None):
@@ -51,7 +52,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.model.folders.append(folder)
             self.model.layoutChanged.emit()
     
+    def moveFiles(self):
+        if self.folder:
+            move_files()
     
+
+
+
 
         
 
