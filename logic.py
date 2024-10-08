@@ -13,9 +13,5 @@ for file in fileResults:
     shutil.move(file, dest)
     print('Successfully moved', file, 'to', dest)
 
-        
-
-
-
 
 
