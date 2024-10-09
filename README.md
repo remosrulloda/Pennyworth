@@ -60,9 +60,8 @@ If you download images from a specific website, **Pennyworth** can automatically
 
 ## Future Enhancements
 
-- Integration with cloud storage services
 - More advanced rule customization
-- GUI for easier rule creation and management
+- Better GUI for easier rule creation and management
 
 ## Contributing
 
