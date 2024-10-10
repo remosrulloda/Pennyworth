@@ -1,68 +1,13 @@
 import sys
-from PySide6.QtCore import Qt, QAbstractListModel
-from PySide6.QtWidgets import (
-    QApplication, 
-    QMainWindow, 
-    QSystemTrayIcon, 
-    QMenu, 
-    QFileDialog
-)
-from PySide6.QtGui import QIcon, QAction
-from MainWindow import Ui_MainWindow
-from file_mover import move_files
+from PySide6.QtWidgets import QApplication
+from ui.MainWindow import MainWindow
 
-class FolderModel(QAbstractListModel):
-    def __init__(self, folders=None):
-        super().__init__()
-        self.folders = folders or []
-    
-    def data(self, index, role):
-        if role == Qt.DisplayRole:
-            text = self.folders[index.row()]
-            return text
-        
-    def rowCount(self, index):
-        return len(self.folders)
-
-class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-        self.initUI()
-        self.model = FolderModel()
-        self.folderViewer.setModel(self.model)
-
-        #Connect the buttons
-        self.addFolderBtn.pressed.connect(self.addFolder)
-        # self.addRule.pressed.connect(self.addRule)
-    
-    def initUI(self):
-        self.setWindowTitle("Pennyworth")
-        self.setGeometry(100, 100, 1000, 600)
-        self.setWindowIcon(QIcon("icon.png"))  
-
-    def addFolder(self):
-        """
-        Adds a folder to the folderView, 
-        getting the folder text from the QDialog
-        """        
-        folder = QFileDialog.getExistingDirectory(self, "Select Folder")
-
-        if folder: 
-            self.model.folders.append(folder)
-            self.model.layoutChanged.emit()
-    
-    def addRule(self):
-        """
-        Adds a rule to the ruleViewer
-        """
-            
 
 if __name__ == "__main__":
     app = QApplication([])
     window = MainWindow()
     window.show()
-    app.exec()
+    sys.exit(app.exec())
 
 
 # class TrayApp(QApplication):
