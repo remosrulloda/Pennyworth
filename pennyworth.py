@@ -18,18 +18,36 @@ class AddRuleDialog(QDialog, Ui_Dialog):
 
         # Connecting buttons
         self.ui.sourceBtn.pressed.connect(self.addSourceDir)
+        self.ui.destBtn.pressed.connect(self.addDestDir)
+        self.ui.confirmBtn.pressed.connect(self.addRule)
+        self.ui.cancelBtn.pressed.connect(self.reject)
+
+        # Get 
+        
 
     def addSourceDir(self):
-        fileName = QFileDialog.getExistingDirectory()
-        if fileName:
-            self.sourceDir = fileName
-            self.customChangeEvent(fileName)
-            self.ui.folderSourceLabel.setText(fileName)
+        sourceName = QFileDialog.getExistingDirectory()
+        if sourceName:
+            self.sourceDir = sourceName
+            self.customChangeEvent(sourceName)
+            self.ui.folderSourceLabel.setText(sourceName)
+            print(self.sourceDir)
+
+    def addDestDir(self):
+        destName = QFileDialog.getExistingDirectory()
+        if destName:
+            self.destDir = destName
+            self.customChangeEvent(destName)
+            self.ui.destFolderLabel.setText(destName)
+            print(self.destDir)
 
     def customChangeEvent(self, fileName):
         print(f"Directory changed to {fileName}")
 
     
+    def addRule(self):
+        print("Confirm button clicked!")
+
 
 
 class RuleModel(QAbstractListModel):

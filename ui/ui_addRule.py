@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractButton, QApplication, QComboBox, QDialog,
-    QDialogButtonBox, QGridLayout, QGroupBox, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QGridLayout,
+    QGroupBox, QHBoxLayout, QLabel, QLineEdit,
+    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
+    QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -29,8 +29,8 @@ class Ui_Dialog(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.ruleEditor = QGroupBox(Dialog)
         self.ruleEditor.setObjectName(u"ruleEditor")
-        self.verticalLayout_3 = QVBoxLayout(self.ruleEditor)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout = QVBoxLayout(self.ruleEditor)
+        self.verticalLayout.setObjectName(u"verticalLayout")
         self.ruleNameViewer = QHBoxLayout()
         self.ruleNameViewer.setObjectName(u"ruleNameViewer")
         self.ruleNameLabel = QLabel(self.ruleEditor)
@@ -44,7 +44,7 @@ class Ui_Dialog(object):
         self.ruleNameViewer.addWidget(self.ruleNameEdit)
 
 
-        self.verticalLayout_3.addLayout(self.ruleNameViewer)
+        self.verticalLayout.addLayout(self.ruleNameViewer)
 
         self.groupBox = QGroupBox(self.ruleEditor)
         self.groupBox.setObjectName(u"groupBox")
@@ -66,12 +66,12 @@ class Ui_Dialog(object):
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_3.addWidget(self.groupBox)
+        self.verticalLayout.addWidget(self.groupBox)
 
         self.ifLabel = QLabel(self.ruleEditor)
         self.ifLabel.setObjectName(u"ifLabel")
 
-        self.verticalLayout_3.addWidget(self.ifLabel)
+        self.verticalLayout.addWidget(self.ifLabel)
 
         self.ifViewer = QGroupBox(self.ruleEditor)
         self.ifViewer.setObjectName(u"ifViewer")
@@ -98,7 +98,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_3.addWidget(self.lineEdit)
 
 
-        self.verticalLayout_3.addWidget(self.ifViewer)
+        self.verticalLayout.addWidget(self.ifViewer)
 
         self.chooseFolderLayout = QHBoxLayout()
         self.chooseFolderLayout.setObjectName(u"chooseFolderLayout")
@@ -117,7 +117,7 @@ class Ui_Dialog(object):
         self.chooseFolderLayout.addWidget(self.destBtn)
 
 
-        self.verticalLayout_3.addLayout(self.chooseFolderLayout)
+        self.verticalLayout.addLayout(self.chooseFolderLayout)
 
         self.thenGroupBox = QGroupBox(self.ruleEditor)
         self.thenGroupBox.setObjectName(u"thenGroupBox")
@@ -140,31 +140,41 @@ class Ui_Dialog(object):
         self.horizontalLayout_2.addWidget(self.destFolderLabel)
 
 
-        self.verticalLayout_3.addWidget(self.thenGroupBox)
+        self.verticalLayout.addWidget(self.thenGroupBox)
 
         self.applyViewer = QHBoxLayout()
         self.applyViewer.setObjectName(u"applyViewer")
 
-        self.verticalLayout_3.addLayout(self.applyViewer)
+        self.verticalLayout.addLayout(self.applyViewer)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.verticalLayout_3.addItem(self.verticalSpacer)
+        self.verticalLayout.addItem(self.verticalSpacer)
+
+        self.confirmCancelLayout = QHBoxLayout()
+        self.confirmCancelLayout.setObjectName(u"confirmCancelLayout")
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.confirmCancelLayout.addItem(self.horizontalSpacer_3)
+
+        self.cancelBtn = QPushButton(self.ruleEditor)
+        self.cancelBtn.setObjectName(u"cancelBtn")
+
+        self.confirmCancelLayout.addWidget(self.cancelBtn)
+
+        self.confirmBtn = QPushButton(self.ruleEditor)
+        self.confirmBtn.setObjectName(u"confirmBtn")
+
+        self.confirmCancelLayout.addWidget(self.confirmBtn)
+
+
+        self.verticalLayout.addLayout(self.confirmCancelLayout)
 
 
         self.gridLayout.addWidget(self.ruleEditor, 0, 0, 1, 1)
 
-        self.canceRuleBtn = QDialogButtonBox(Dialog)
-        self.canceRuleBtn.setObjectName(u"canceRuleBtn")
-        self.canceRuleBtn.setOrientation(Qt.Orientation.Horizontal)
-        self.canceRuleBtn.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Ok)
-
-        self.gridLayout.addWidget(self.canceRuleBtn, 1, 0, 1, 1)
-
 
         self.retranslateUi(Dialog)
-        self.canceRuleBtn.accepted.connect(Dialog.accept)
-        self.canceRuleBtn.rejected.connect(Dialog.reject)
 
         QMetaObject.connectSlotsByName(Dialog)
     # setupUi
@@ -189,5 +199,7 @@ class Ui_Dialog(object):
 
         self.toFolderLabel.setText(QCoreApplication.translate("Dialog", u"to folder:", None))
         self.destFolderLabel.setText(QCoreApplication.translate("Dialog", u"No Destination Folder Chosen", None))
+        self.cancelBtn.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
+        self.confirmBtn.setText(QCoreApplication.translate("Dialog", u"Confirm", None))
     # retranslateUi
 
