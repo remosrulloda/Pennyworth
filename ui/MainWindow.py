@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QMainWindow, QFileDialog
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import Qt
 from models.folder_model import FolderModel
+from models.rule_model import RuleModel
 from ui.ui_mainwindow import Ui_MainWindow
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -12,6 +13,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.model = FolderModel()
         self.folderViewer.setModel(self.model)
+        # self.ruleViewer.setModel(self.model)
 
         # Connect the buttons
         self.addFolderBtn.pressed.connect(self.addFolder)
@@ -39,8 +41,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         indexes = self.folderViewer.selectedIndexes()
 
         if indexes:
-            selectedFolderIndex = indexes[0]    
-            selectedFolder = self.folderViewer.model().data(selectedFolderIndex, role=Qt.DisplayRole)
+            selectedFolderIndex = indexes[0] 
+            new_rule = "test"
+            self.model.rules.append(new_rule)
+            
             
 
 
