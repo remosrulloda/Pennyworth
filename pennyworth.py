@@ -13,17 +13,21 @@ class AddRuleDialog(QDialog, Ui_Dialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.setWindowTitle("Add Rule")
+
+        # Rule members
+        self.ruleName = ''
         self.sourceDir = ''
         self.destDir = ''
+        self.fileAttribute = ''
+        self.comparisonOperator = ''
+        self.comparisonValue = ''
+        self.actionToTake = ''
 
         # Connecting buttons
         self.ui.sourceBtn.pressed.connect(self.addSourceDir)
         self.ui.destBtn.pressed.connect(self.addDestDir)
         self.ui.confirmBtn.pressed.connect(self.addRule)
         self.ui.cancelBtn.pressed.connect(self.reject)
-
-        # Get 
-        
 
     def addSourceDir(self):
         sourceName = QFileDialog.getExistingDirectory()
@@ -46,7 +50,22 @@ class AddRuleDialog(QDialog, Ui_Dialog):
 
     
     def addRule(self):
-        print("Confirm button clicked!")
+        self.ruleName = self.ui.ruleNameEdit.text()
+        self.fileAttribute = self.ui.ruleComboBox.currentText()
+        self.comparisonOperator = self.ui.verbComboBox.currentText()
+        self.comparisonValue = self.ui.lineEdit.text()
+        self.actionToTake = self.ui.actionComboBox.currentText()
+
+        # rule_text = f"{self.ruleName}"
+        # print(rule_text)
+
+        # Accept and return the rule
+        self.accept()
+    
+    def getRule(self):
+        return f"{self.ruleName}"
+
+
 
 
 
@@ -62,6 +81,12 @@ class RuleModel(QAbstractListModel):
         
     def rowCount(self, index):
         return len(self.rules)
+            
+    def addRule(self, rule):
+        self.beginInsertRows(self.index(len(self.rules)), len(self.rules), len(self.rules))
+        self.rules.append(rule)
+        self.endInsertRows()
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
