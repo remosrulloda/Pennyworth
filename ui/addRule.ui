@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>788</width>
-    <height>632</height>
+    <width>595</width>
+    <height>455</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,8 +46,11 @@
          </item>
          <item>
           <widget class="QLabel" name="folderSourceLabel">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(192, 28, 40)</string>
+           </property>
            <property name="text">
-            <string>folderSourceLabel</string>
+            <string>No Directory Chosen</string>
            </property>
           </widget>
          </item>
@@ -117,11 +120,35 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="thenLabel">
-        <property name="text">
-         <string>Do the following to the matched folder:</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="chooseFolderLayout">
+        <item>
+         <widget class="QLabel" name="thenLabel">
+          <property name="text">
+           <string>Do the following to the matched folder:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="destBtn">
+          <property name="text">
+           <string>Choose Folder</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="QGroupBox" name="thenGroupBox">
@@ -143,9 +170,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="destBtn">
+          <widget class="QLabel" name="destFolderLabel">
            <property name="text">
-            <string>Choose Folder</string>
+            <string>No Destination Folder Chosen</string>
            </property>
           </widget>
          </item>
@@ -172,7 +199,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
+    <widget class="QDialogButtonBox" name="canceRuleBtn">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
@@ -186,7 +213,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>canceRuleBtn</sender>
    <signal>accepted()</signal>
    <receiver>Dialog</receiver>
    <slot>accept()</slot>
@@ -202,7 +229,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>canceRuleBtn</sender>
    <signal>rejected()</signal>
    <receiver>Dialog</receiver>
    <slot>reject()</slot>

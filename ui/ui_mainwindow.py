@@ -15,19 +15,19 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QListWidget,
-    QListWidgetItem, QMainWindow, QPushButton, QSizePolicy,
+from PySide6.QtWidgets import (QApplication, QGridLayout, QHBoxLayout, QLabel,
+    QListView, QMainWindow, QPushButton, QSizePolicy,
     QStatusBar, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(378, 482)
+        MainWindow.resize(401, 484)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.horizontalLayout = QHBoxLayout(self.centralwidget)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.gridLayout = QGridLayout(self.centralwidget)
+        self.gridLayout.setObjectName(u"gridLayout")
         self.ruleLayout = QVBoxLayout()
         self.ruleLayout.setObjectName(u"ruleLayout")
         self.rulesTitle = QLabel(self.centralwidget)
@@ -38,6 +38,11 @@ class Ui_MainWindow(object):
         self.rulesTitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.ruleLayout.addWidget(self.rulesTitle)
+
+        self.ruleView = QListView(self.centralwidget)
+        self.ruleView.setObjectName(u"ruleView")
+
+        self.ruleLayout.addWidget(self.ruleView)
 
         self.ruleBtnViewer = QHBoxLayout()
         self.ruleBtnViewer.setObjectName(u"ruleBtnViewer")
@@ -54,13 +59,8 @@ class Ui_MainWindow(object):
 
         self.ruleLayout.addLayout(self.ruleBtnViewer)
 
-        self.ruleViewer = QListWidget(self.centralwidget)
-        self.ruleViewer.setObjectName(u"ruleViewer")
 
-        self.ruleLayout.addWidget(self.ruleViewer)
-
-
-        self.horizontalLayout.addLayout(self.ruleLayout)
+        self.gridLayout.addLayout(self.ruleLayout, 0, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusBar = QStatusBar(MainWindow)

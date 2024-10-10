@@ -24,7 +24,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(788, 632)
+        Dialog.resize(595, 455)
         self.gridLayout = QGridLayout(Dialog)
         self.gridLayout.setObjectName(u"gridLayout")
         self.ruleEditor = QGroupBox(Dialog)
@@ -57,6 +57,7 @@ class Ui_Dialog(object):
 
         self.folderSourceLabel = QLabel(self.groupBox)
         self.folderSourceLabel.setObjectName(u"folderSourceLabel")
+        self.folderSourceLabel.setStyleSheet(u"color: rgb(192, 28, 40)")
 
         self.horizontalLayout.addWidget(self.folderSourceLabel)
 
@@ -99,10 +100,24 @@ class Ui_Dialog(object):
 
         self.verticalLayout_3.addWidget(self.ifViewer)
 
+        self.chooseFolderLayout = QHBoxLayout()
+        self.chooseFolderLayout.setObjectName(u"chooseFolderLayout")
         self.thenLabel = QLabel(self.ruleEditor)
         self.thenLabel.setObjectName(u"thenLabel")
 
-        self.verticalLayout_3.addWidget(self.thenLabel)
+        self.chooseFolderLayout.addWidget(self.thenLabel)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.chooseFolderLayout.addItem(self.horizontalSpacer_2)
+
+        self.destBtn = QPushButton(self.ruleEditor)
+        self.destBtn.setObjectName(u"destBtn")
+
+        self.chooseFolderLayout.addWidget(self.destBtn)
+
+
+        self.verticalLayout_3.addLayout(self.chooseFolderLayout)
 
         self.thenGroupBox = QGroupBox(self.ruleEditor)
         self.thenGroupBox.setObjectName(u"thenGroupBox")
@@ -119,10 +134,10 @@ class Ui_Dialog(object):
 
         self.horizontalLayout_2.addWidget(self.toFolderLabel)
 
-        self.destBtn = QPushButton(self.thenGroupBox)
-        self.destBtn.setObjectName(u"destBtn")
+        self.destFolderLabel = QLabel(self.thenGroupBox)
+        self.destFolderLabel.setObjectName(u"destFolderLabel")
 
-        self.horizontalLayout_2.addWidget(self.destBtn)
+        self.horizontalLayout_2.addWidget(self.destFolderLabel)
 
 
         self.verticalLayout_3.addWidget(self.thenGroupBox)
@@ -139,17 +154,17 @@ class Ui_Dialog(object):
 
         self.gridLayout.addWidget(self.ruleEditor, 0, 0, 1, 1)
 
-        self.buttonBox = QDialogButtonBox(Dialog)
-        self.buttonBox.setObjectName(u"buttonBox")
-        self.buttonBox.setOrientation(Qt.Orientation.Horizontal)
-        self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Ok)
+        self.canceRuleBtn = QDialogButtonBox(Dialog)
+        self.canceRuleBtn.setObjectName(u"canceRuleBtn")
+        self.canceRuleBtn.setOrientation(Qt.Orientation.Horizontal)
+        self.canceRuleBtn.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Ok)
 
-        self.gridLayout.addWidget(self.buttonBox, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.canceRuleBtn, 1, 0, 1, 1)
 
 
         self.retranslateUi(Dialog)
-        self.buttonBox.accepted.connect(Dialog.accept)
-        self.buttonBox.rejected.connect(Dialog.reject)
+        self.canceRuleBtn.accepted.connect(Dialog.accept)
+        self.canceRuleBtn.rejected.connect(Dialog.reject)
 
         QMetaObject.connectSlotsByName(Dialog)
     # setupUi
@@ -159,7 +174,7 @@ class Ui_Dialog(object):
         self.ruleNameLabel.setText(QCoreApplication.translate("Dialog", u"Rule name:", None))
         self.groupBox.setTitle("")
         self.sourceBtn.setText(QCoreApplication.translate("Dialog", u"Folder Source", None))
-        self.folderSourceLabel.setText(QCoreApplication.translate("Dialog", u"folderSourceLabel", None))
+        self.folderSourceLabel.setText(QCoreApplication.translate("Dialog", u"No Directory Chosen", None))
         self.ifLabel.setText(QCoreApplication.translate("Dialog", u"If any of the following conditions are met:", None))
         self.ruleComboBox.setItemText(0, QCoreApplication.translate("Dialog", u"File", None))
         self.ruleComboBox.setItemText(1, QCoreApplication.translate("Dialog", u"Extension", None))
@@ -169,9 +184,10 @@ class Ui_Dialog(object):
         self.verbComboBox.setItemText(2, QCoreApplication.translate("Dialog", u"begins with", None))
 
         self.thenLabel.setText(QCoreApplication.translate("Dialog", u"Do the following to the matched folder:", None))
+        self.destBtn.setText(QCoreApplication.translate("Dialog", u"Choose Folder", None))
         self.actionComboBox.setItemText(0, QCoreApplication.translate("Dialog", u"Move", None))
 
         self.toFolderLabel.setText(QCoreApplication.translate("Dialog", u"to folder:", None))
-        self.destBtn.setText(QCoreApplication.translate("Dialog", u"Choose Folder", None))
+        self.destFolderLabel.setText(QCoreApplication.translate("Dialog", u"No Destination Folder Chosen", None))
     # retranslateUi
 

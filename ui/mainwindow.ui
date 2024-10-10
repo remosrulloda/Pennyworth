@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>378</width>
-    <height>482</height>
+    <width>401</width>
+    <height>484</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
      <layout class="QVBoxLayout" name="ruleLayout">
       <item>
        <widget class="QLabel" name="rulesTitle">
@@ -31,6 +31,9 @@
          <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="QListView" name="ruleView"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="ruleBtnViewer">
@@ -49,9 +52,6 @@
          </widget>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QListWidget" name="ruleViewer"/>
       </item>
      </layout>
     </item>
