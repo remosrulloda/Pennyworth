@@ -6,6 +6,7 @@ from PySide6.QtCore import Qt, QAbstractListModel
 
 from ui.ui_mainwindow import Ui_MainWindow
 from ui.ui_addRule import Ui_Dialog
+from ui.ui_deleteRule import Ui_Dialog as delete_Dialog
 
 class AddRuleDialog(QDialog, Ui_Dialog):
     def __init__(self):
@@ -148,6 +149,22 @@ class RuleModel(QAbstractListModel):
         self.endInsertRows()
 
 
+class DeleteDialog(QDialog, delete_Dialog):
+    def __init__(self, rule_name):
+        super().__init__()
+        self.ui = delete_Dialog()
+        self.ui.setupUi(self)
+        self.setWindowTitle("Delete Rule")
+        self.ui.deleteMsgLabel.setText(f"Are you sure you want to delete the rule: '{rule_name}'?")
+
+        # Connect buttons
+        self.ui.confirmDeleteBtn.pressed.connect(self.confirmDelete)
+        self.ui.cancelDeleteBtn.pressed.connect(self.reject)
+
+    def confirmDelete(self):
+        self.accept()
+    
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
@@ -158,6 +175,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Connecting buttons
         self.addRuleBtn.pressed.connect(self.add)
+        self.deleteRuleBtn.pressed.connect(self.delete)
 
     def add(self):
         # Add a rule to the rule file rules list 
@@ -167,6 +185,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if rule_text:
                 self.model.addRule(("active", rule_text))
 
+    def delete(self):
+        indexes = self.ruleView.selectedIndexes()
+        if indexes:            
+            index = indexes[0]
+            rule_name = self.model.rules[index.row()][1]
+            dialog = DeleteDialog(rule_name)
+            if dialog.exec():
+                del self.model.rules[index.row()]
+                self.model.layoutChanged.emit()
+                self.ruleView.clearSelection()
     
 if __name__ == "__main__":
     app = QApplication([])
