@@ -183,7 +183,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if dialog.exec():
             rule_text = dialog.getRuleName()
             if rule_text:
-                self.model.addRule(("active", rule_text))
+                self.model.addRule((True, rule_text))
 
     def delete(self):
         indexes = self.ruleView.selectedIndexes()
