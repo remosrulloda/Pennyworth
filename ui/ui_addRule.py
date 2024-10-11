@@ -57,7 +57,7 @@ class Ui_Dialog(object):
 
         self.folderSourceLabel = QLabel(self.groupBox)
         self.folderSourceLabel.setObjectName(u"folderSourceLabel")
-        self.folderSourceLabel.setStyleSheet(u"color: rgb(192, 28, 40)")
+        self.folderSourceLabel.setStyleSheet(u"")
 
         self.horizontalLayout.addWidget(self.folderSourceLabel)
 
@@ -184,7 +184,7 @@ class Ui_Dialog(object):
         self.ruleNameLabel.setText(QCoreApplication.translate("Dialog", u"Rule name:", None))
         self.groupBox.setTitle("")
         self.sourceBtn.setText(QCoreApplication.translate("Dialog", u"Folder Source", None))
-        self.folderSourceLabel.setText(QCoreApplication.translate("Dialog", u"No Directory Chosen", None))
+        self.folderSourceLabel.setText("")
         self.ifLabel.setText(QCoreApplication.translate("Dialog", u"If any of the following conditions are met:", None))
         self.ruleComboBox.setItemText(0, QCoreApplication.translate("Dialog", u"File", None))
         self.ruleComboBox.setItemText(1, QCoreApplication.translate("Dialog", u"Extension", None))
@@ -198,7 +198,7 @@ class Ui_Dialog(object):
         self.actionComboBox.setItemText(0, QCoreApplication.translate("Dialog", u"Move", None))
 
         self.toFolderLabel.setText(QCoreApplication.translate("Dialog", u"to folder:", None))
-        self.destFolderLabel.setText(QCoreApplication.translate("Dialog", u"No Destination Folder Chosen", None))
+        self.destFolderLabel.setText("")
         self.cancelBtn.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
         self.confirmBtn.setText(QCoreApplication.translate("Dialog", u"Confirm", None))
     # retranslateUi

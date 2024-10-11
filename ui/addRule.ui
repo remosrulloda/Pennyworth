@@ -47,10 +47,10 @@
          <item>
           <widget class="QLabel" name="folderSourceLabel">
            <property name="styleSheet">
-            <string notr="true">color: rgb(192, 28, 40)</string>
+            <string notr="true"/>
            </property>
            <property name="text">
-            <string>No Directory Chosen</string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -172,7 +172,7 @@
          <item>
           <widget class="QLabel" name="destFolderLabel">
            <property name="text">
-            <string>No Destination Folder Chosen</string>
+            <string/>
            </property>
           </widget>
          </item>
