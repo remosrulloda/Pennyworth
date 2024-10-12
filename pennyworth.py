@@ -228,10 +228,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.model = RuleModel()
         self.setWindowTitle("Pennyworth")
 
-        # Create database to store rules
+        # Create and load database
         create_table()
-
-        # Load rules from database
         self.load()
 
         # Connecting buttons
@@ -251,7 +249,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 rule_widget.editRequested.connect(lambda data, item=item: self.edit(item, data))
 
                 item.setData(Qt.UserRole, rule_data)
-
                 item.setSizeHint(rule_widget.sizeHint())
 
                 self.ruleView.addItem(item)
