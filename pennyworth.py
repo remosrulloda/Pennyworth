@@ -1,6 +1,4 @@
 import sys
-import os
-import json 
 
 from PySide6.QtWidgets import (
     QApplication, 
@@ -18,8 +16,7 @@ from ui.ui_mainwindow import Ui_MainWindow
 from ui.ui_addRule import Ui_Dialog
 from ui.ui_deleteRule import Ui_Dialog as delete_Dialog
 from ui.ui_Rule import Ui_Form 
-
-basedir = os.path.dirname(__file__)
+from database import *
 
 class RuleItem(QWidget, Ui_Form):
     editRequested = Signal(dict)
@@ -197,15 +194,15 @@ class RuleModel(QAbstractListModel):
     
     def data(self, index, role):
         if role == Qt.DisplayRole or role == Qt.DecorationRole:
-            _, rule_name = self.rules[index.row()]
-            return rule_name
+            rule_data = self.rules[0]
+            return rule_data['ruleName']
         
     def rowCount(self, index):
         return len(self.rules)
             
-    def addRule(self, rule):
+    def addRule(self, rule_data):
         self.beginInsertRows(self.index(len(self.rules)), len(self.rules), len(self.rules))
-        self.rules.append(rule)
+        self.rules.append(rule_data)
         self.endInsertRows()
 
 
@@ -229,8 +226,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.model = RuleModel()
-        self.ruleView = self.ruleView
         self.setWindowTitle("Pennyworth")
+
+        # Create database to store rules
+        create_table()
+
+        # Load rules from database
+        self.load()
 
         # Connecting buttons
         self.addRuleBtn.pressed.connect(self.add)
@@ -255,6 +257,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.ruleView.addItem(item)
                 self.ruleView.setItemWidget(item, rule_widget)
 
+                self.model.addRule(rule_data)
+                self.save()
+
     def edit(self, item, current_rule_data):
         dialog = AddRuleDialog()
         dialog.setRuleData(current_rule_data)
@@ -270,23 +275,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         
     def delete(self):
-        selected_items = self.ruleView.selectedItems()
-        if not selected_items:
+        selected_indexes = self.ruleView.selectedItems()
+        if not selected_indexes:
             return
-        for item in selected_items:
-            row = self.ruleView.row(item)
-            self.ruleView.takeItem(row)
 
-    def load(self):
-        try:
-            with open("data.json", "r") as f:
-                self.model.rules = json.load(f)
-        except Exception:
-            pass
+        item = selected_indexes[0]
+        rule_name = item.text()
 
-    def save(self):
-        with open("data.json", "w") as f:
-            data = json.dump(self.model.rules, f)
+        dialog = DeleteDialog(rule_name)
+        if dialog.exec() == QDialog.Accepted:
+            index = self.ruleView.row(item)
+
+            self.model.beginRemoveColumns(self.model.index(index), index, index)
+            del self.model.rules[index]
+            self.model.endRemoveRows()
+
+            self.ruleView.takeItem(self.ruleView.row(item))
+            self.save()
+            self.ruleView.clearSelection()
+
 
     def getSelectedRuleData(self):
         selected_items = self.ruleView.selectedItems()
@@ -296,6 +303,59 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         selected_item = selected_items[0]
         rule_data = selected_item.data(Qt.UserRole)
         return rule_data
+    
+    def load(self):
+        try:
+            with sqlite3.connect("rules.db") as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT * FROM rules")
+                rows = cursor.fetchall()  # Fetch all rows from the executed query
+                
+                print(f"Total rows fetched: {len(rows)}")  # Debugging output
+                
+                self.model.rules.clear()
+                self.ruleView.clear() 
+
+                for row in rows:
+                    print(f"Processing row: {row}")  # Debugging output
+                    
+                    rule_data = {
+                        'ruleName': row[1],
+                        'sourceDir': row[2],
+                        'destDir': row[3],
+                        'fileAttribute': row[4],
+                        'comparisonOperator': row[5],
+                        'comparisonValue': row[6],
+                        'actionToTake': row[7],
+                    }
+
+                    self.model.addRule(rule_data)
+
+                    item = QListWidgetItem(self.ruleView)
+                    rule_widget = RuleItem(rule_data)
+                    item.setData(Qt.UserRole, rule_data)
+                    item.setSizeHint(rule_widget.sizeHint())
+                    self.ruleView.addItem(item)
+                    self.ruleView.setItemWidget(item, rule_widget)
+
+        except sqlite3.Error as e:
+            print(f"Error loading rules: {e}")
+
+
+    def save(self):
+        with sqlite3.connect("rules.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM rules")
+            for rule in self.model.rules:
+                cursor.execute(
+                '''
+                    INSERT INTO rules (rule_name, source_dir, dest_dir, file_attribute, comparison_operator, comparison_value, action_to_take)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                ''', (rule['ruleName'], rule['sourceDir'], rule['destDir'], rule['fileAttribute'],
+                    rule['comparisonOperator'], rule['comparisonValue'], rule['actionToTake']))
+            
+            conn.commit()
+
     
 if __name__ == "__main__":
     app = QApplication([])
