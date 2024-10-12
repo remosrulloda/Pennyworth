@@ -1,12 +1,33 @@
 import sys
-from PySide6.QtWidgets import QApplication
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QDialog, QMessageBox
+import os
+import json 
+
+from PySide6.QtWidgets import (
+    QApplication, 
+    QMainWindow, 
+    QFileDialog, 
+    QDialog, 
+    QMessageBox, 
+    QWidget, 
+    QListWidgetItem
+)
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import Qt, QAbstractListModel
 
 from ui.ui_mainwindow import Ui_MainWindow
 from ui.ui_addRule import Ui_Dialog
 from ui.ui_deleteRule import Ui_Dialog as delete_Dialog
+from ui.ui_Rule import Ui_Form 
+
+basedir = os.path.dirname(__file__)
+
+class RuleItem(QWidget, Ui_Form):
+    def __init__(self, rule_name, parent=None):
+        super().__init__(parent)
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+
+        self.ui.rule.setText(rule_name)
 
 class AddRuleDialog(QDialog, Ui_Dialog):
     def __init__(self):
@@ -129,16 +150,15 @@ class AddRuleDialog(QDialog, Ui_Dialog):
     def showErrorMessage(self, message):
         QMessageBox.warning(self, "Input Error", message)
 
-
 class RuleModel(QAbstractListModel):
     def __init__(self, rules=None):
         super().__init__()
         self.rules = rules or []
     
     def data(self, index, role):
-        if role == Qt.DisplayRole:
-            status, text = self.rules[index.row()]
-            return text
+        if role == Qt.DisplayRole or role == Qt.DecorationRole:
+            _, rule_name = self.rules[index.row()]
+            return rule_name
         
     def rowCount(self, index):
         return len(self.rules)
@@ -163,14 +183,13 @@ class DeleteDialog(QDialog, delete_Dialog):
 
     def confirmDelete(self):
         self.accept()
-    
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.model = RuleModel()
-        self.ruleView.setModel(self.model)
+        self.ruleView = self.ruleView
         self.setWindowTitle("Pennyworth")
 
         # Connecting buttons
@@ -181,20 +200,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Add a rule to the rule file rules list 
         dialog = AddRuleDialog()
         if dialog.exec():
-            rule_text = dialog.getRuleName()
-            if rule_text:
-                self.model.addRule((True, rule_text))
+            rule_name = dialog.getRuleName()
+            if rule_name:
+                item = QListWidgetItem(self.ruleView)
+
+                rule_widget = RuleItem(rule_name)
+
+                item.setSizeHint(rule_widget.sizeHint())
+
+                self.ruleView.addItem(item)
+                self.ruleView.setItemWidget(item, rule_widget)
+
 
     def delete(self):
-        indexes = self.ruleView.selectedIndexes()
-        if indexes:            
-            index = indexes[0]
-            rule_name = self.model.rules[index.row()][1]
-            dialog = DeleteDialog(rule_name)
-            if dialog.exec():
-                del self.model.rules[index.row()]
-                self.model.layoutChanged.emit()
-                self.ruleView.clearSelection()
+        selected_items = self.ruleView.selectedItems()
+        if not selected_items:
+            return
+        for item in selected_items:
+            row = self.ruleView.row(item)
+            self.ruleView.takeItem(row)
+
+    def load(self):
+        try:
+            with open("data.json", "r") as f:
+                self.model.rules = json.load(f)
+        except Exception:
+            pass
+
+    def save(self):
+        with open("data.json", "w") as f:
+            data = json.dump(self.model.rules, f)
     
 if __name__ == "__main__":
     app = QApplication([])
