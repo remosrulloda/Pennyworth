@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
     QListWidgetItem
 )
 from PySide6.QtGui import QIcon
-from PySide6.QtCore import Qt, QAbstractListModel
+from PySide6.QtCore import Qt, QAbstractListModel, Signal
 
 from ui.ui_mainwindow import Ui_MainWindow
 from ui.ui_addRule import Ui_Dialog
@@ -22,12 +22,24 @@ from ui.ui_Rule import Ui_Form
 basedir = os.path.dirname(__file__)
 
 class RuleItem(QWidget, Ui_Form):
-    def __init__(self, rule_name, parent=None):
+    editRequested = Signal(dict)
+
+    def __init__(self, rule_data, parent=None):
         super().__init__(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        self.ui.rule.setText(rule_name)
+        if isinstance(rule_data, dict):
+            self.rule_data = rule_data
+        else:
+            raise TypeError("Expected rule_data to be a dictionary")
+
+        self.ui.rule.setText(self.rule_data['ruleName'])
+        self.ui.rule.setChecked(True)
+        self.ui.editRuleBtn.pressed.connect(self.requestEdit)
+
+    def requestEdit(self):
+        self.editRequested.emit(self.rule_data)
 
 class AddRuleDialog(QDialog, Ui_Dialog):
     def __init__(self):
@@ -70,7 +82,7 @@ class AddRuleDialog(QDialog, Ui_Dialog):
         sourceName = QFileDialog.getExistingDirectory()
         if sourceName:
             self.sourceDir = sourceName
-            self.customChangeEvent(sourceName)
+            self.customChangeEvent("Source", sourceName)
             self.ui.folderSourceLabel.setText(sourceName)
             self.onInputChange('source')
 
@@ -78,12 +90,12 @@ class AddRuleDialog(QDialog, Ui_Dialog):
         destName = QFileDialog.getExistingDirectory()
         if destName:
             self.destDir = destName
-            self.customChangeEvent(destName)
+            self.customChangeEvent("Destination", destName)
             self.ui.destFolderLabel.setText(destName)
             self.onInputChange('dest')
 
-    def customChangeEvent(self, fileName):
-        print(f"Directory changed to {fileName}")
+    def customChangeEvent(self, dir, fileName):
+        print(f"{dir} changed to {fileName}")
 
     def addRule(self):
         self.ruleName = self.ui.ruleNameEdit.text().strip()
@@ -115,6 +127,34 @@ class AddRuleDialog(QDialog, Ui_Dialog):
     
         # Accept and return the rule
         self.accept()
+
+    def setRuleData(self, rule_data):
+        self.ruleName = rule_data['ruleName']
+        self.sourceDir = rule_data['sourceDir']
+        self.destDir = rule_data['destDir']
+        self.fileAttribute = rule_data['fileAttribute']
+        self.comparisonOperator = rule_data['comparisonOperator']
+        self.comparisonValue = rule_data['comparisonValue']
+        self.actionToTake = rule_data['actionToTake']
+    
+        self.ui.ruleNameEdit.setText(self.ruleName)
+        self.ui.folderSourceLabel.setText(self.sourceDir)
+        self.ui.destFolderLabel.setText(self.destDir)
+        self.ui.ruleComboBox.setCurrentText(self.fileAttribute)
+        self.ui.verbComboBox.setCurrentText(self.comparisonOperator)
+        self.ui.lineEdit.setText(self.comparisonValue)
+        self.ui.actionComboBox.setCurrentText(self.actionToTake)
+    
+    def getRuleData(self):
+        return {
+            'ruleName': self.ruleName,
+            'sourceDir': self.sourceDir,
+            'destDir': self.destDir, 
+            'fileAttribute': self.fileAttribute,
+            'comparisonOperator': self.comparisonOperator,
+            'comparisonValue': self.comparisonValue,
+            'actionToTake': self.actionToTake
+        }
 
     def highlightMissingFields(self, missing_fields):
         # Reset all field backgrounds to default color
@@ -200,18 +240,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Add a rule to the rule file rules list 
         dialog = AddRuleDialog()
         if dialog.exec():
-            rule_name = dialog.getRuleName()
-            if rule_name:
+            rule_data = dialog.getRuleData()
+            if rule_data:
                 item = QListWidgetItem(self.ruleView)
 
-                rule_widget = RuleItem(rule_name)
+                rule_widget = RuleItem(rule_data)
+
+                rule_widget.editRequested.connect(lambda data, item=item: self.edit(item, data))
+
+                item.setData(Qt.UserRole, rule_data)
 
                 item.setSizeHint(rule_widget.sizeHint())
 
                 self.ruleView.addItem(item)
                 self.ruleView.setItemWidget(item, rule_widget)
 
+    def edit(self, item, current_rule_data):
+        dialog = AddRuleDialog()
+        dialog.setRuleData(current_rule_data)
 
+        if dialog.exec():
+            updated_rule_data = dialog.getRuleData()
+
+            item.setData(Qt.UserRole, updated_rule_data)
+
+            rule_widget = self.ruleView.itemWidget(item)
+            rule_widget.ui.rule.setText(updated_rule_data['ruleName'])
+            rule_widget.rule_data = updated_rule_data
+
+        
     def delete(self):
         selected_items = self.ruleView.selectedItems()
         if not selected_items:
@@ -230,6 +287,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save(self):
         with open("data.json", "w") as f:
             data = json.dump(self.model.rules, f)
+
+    def getSelectedRuleData(self):
+        selected_items = self.ruleView.selectedItems()
+        if not selected_items:
+            return None
+        
+        selected_item = selected_items[0]
+        rule_data = selected_item.data(Qt.UserRole)
+        return rule_data
     
 if __name__ == "__main__":
     app = QApplication([])
