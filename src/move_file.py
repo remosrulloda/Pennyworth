@@ -4,15 +4,15 @@ from pathlib import Path
 def move_file(comparisonOperator, inputStr, sourceDir, destDir):
     source = Path(sourceDir)
     dest = Path(destDir)
-    fileResults = ''
+    fileResults = []
     
     match comparisonOperator:
         case "is":
-            fileResults = list(source.glob(f'*{inputStr}*'))
+            fileResults = list(source.glob(f'{inputStr}'))
         case "begins with":
-            fileResults = list(source.glob(f'*{inputStr}'))
+            fileResults = list(source.glob(f'{inputStr}*'))
         case "contains":
-            fileResults = list()    
+            fileResults = list(source.glob(f'*{inputStr}*'))
 
     for file in fileResults:
         try:
