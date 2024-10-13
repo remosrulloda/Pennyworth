@@ -49,7 +49,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item = QListWidgetItem(self.ruleView)
                 rule_widget = RuleItem(rule_data)
 
-                rule_widget.editRequested.connect(lambda data, item=item: self.edit(item, data))
+                rule_widget.editRequested.connect(lambda data, item=item: self.editRule(item, data))
 
                 item.setData(Qt.UserRole, rule_data)
                 item.setSizeHint(rule_widget.sizeHint())
@@ -59,7 +59,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 self.model.addRule(rule_data)
 
-    def edit(self, item, current_rule_data):
+    def editRule(self, item, current_rule_data):
         dialog = AddRuleDialog()
         dialog.setRuleData(current_rule_data)
 
@@ -82,7 +82,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         item = selected_indexes[0]
         rule_data = item.data(Qt.UserRole)
 
-        print(f"\n\n{rule_data}")
+        print(f"Deleted {rule_data['ruleName']}")
 
         dialog = DeleteDialog(rule_data['ruleName'])
 
