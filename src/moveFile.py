@@ -11,7 +11,6 @@ def move_file(comparisonOperator, inputStr, sourceDir, destDir):
             fileResults = list(source.glob(inputStr))
         case "begins with":
             fileResults = list(source.glob(f'{inputStr}*'))
-            print("testing")
         case "contains":
             fileResults = list(source.glob(f'*{inputStr}*'))
 

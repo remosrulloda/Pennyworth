@@ -20,3 +20,6 @@ class RuleItem(QWidget, Ui_Form):
 
     def requestEdit(self):
         self.editRequested.emit(self.rule_data)
+
+    def isActive(self):
+        return self.ui.rule.isChecked()

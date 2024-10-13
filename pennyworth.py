@@ -72,6 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Updates the QListWidget item with new data
             item.setData(Qt.UserRole, updated_rule_data)
 
+            # Updated widget UI
             rule_widget = self.ruleView.itemWidget(item)
             rule_widget.ui.rule.setText(updated_rule_data['ruleName'])
             rule_widget.rule_data = updated_rule_data
@@ -112,7 +113,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return rule_data
     
     def run_all_rules(self):
-        for rule in self.model.rules:
+        active_rules = self.getActiveRules()
+        for rule in active_rules:
             try:
                 move_file(
                     rule['comparisonOperator'],
@@ -143,6 +145,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.timer.stop()
         self.db.closeDB()
         event.accept()
+
+    def getActiveRules(self):
+        active_rules = []
+
+        for index in range(self.ruleView.count()):
+            rule = self.ruleView.item(index)
+            rule_widget = self.ruleView.itemWidget(rule)
+            if rule_widget.isActive():
+                active_rules.append(rule_widget.rule_data)
+
+        return active_rules
+        
     
 if __name__ == "__main__":
     app = QApplication([])
