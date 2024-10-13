@@ -14,7 +14,6 @@ class RuleModel(QAbstractListModel):
         return len(self.rules)
             
     def addRule(self, rule_data):
-        # self.beginInsertRows(self.index(len(self.rules)), len(self.rules), len(self.rules))
         self.beginInsertRows(QModelIndex(), len(self.rules), len(self.rules))
         self.rules.append(rule_data)
         self.endInsertRows()

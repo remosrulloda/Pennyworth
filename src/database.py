@@ -10,12 +10,12 @@ def create_table():
     cursor.execute(
         '''
         CREATE TABLE IF NOT EXISTS rules (
-            id INTEGER PRIMARY KEY,
-            rule_name TEXT,
-            source_dir TEXT,
-            dest_dir TEXT,
-            file_attribute TEXT,
-            comparison_operator TEXT,
+            id VARCHAR(36) PRIMARY KEY,
+            rule_name VARCHAR(255),
+            source_dir VARCHAR(255),
+            dest_dir VARCHAR(255),
+            file_attribute VARCHAR(255),
+            comparison_operator VARCHAR(10),
             comparison_value TEXT,
             action_to_take TEXT
         );

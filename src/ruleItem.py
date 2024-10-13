@@ -12,10 +12,7 @@ class RuleItem(QWidget, Ui_Form):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        if isinstance(rule_data, dict):
-            self.rule_data = rule_data
-        else:
-            raise TypeError("Expected rule_data to be a dictionary")
+        self.rule_data = rule_data
 
         self.ui.rule.setText(self.rule_data['ruleName'])
         self.ui.rule.setChecked(True)
