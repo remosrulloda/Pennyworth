@@ -80,7 +80,7 @@ class AddRuleDialog(QDialog, Ui_Dialog):
         self.accept()
 
     def setRuleData(self, rule_data):
-        self.id = rule_data['rule_id']
+        self.rule_id = rule_data['rule_id']
         self.ruleName = rule_data['ruleName']
         self.sourceDir = rule_data['sourceDir']
         self.destDir = rule_data['destDir']

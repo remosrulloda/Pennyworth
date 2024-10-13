@@ -45,8 +45,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if dialog.exec():
             rule_data = dialog.getRuleData()
             if rule_data:
-
-                self.insert(rule_data)
                 
                 item = QListWidgetItem(self.ruleView)
                 rule_widget = RuleItem(rule_data)
@@ -68,8 +66,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if dialog.exec():
             updated_rule_data = dialog.getRuleData()
 
-            updated_rule_data['rule_id'] = current_rule_data['rule_id']
-
             print(f"Updating with dat: {updated_rule_data}")
 
             item.setData(Qt.UserRole, updated_rule_data)
@@ -77,8 +73,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             rule_widget = self.ruleView.itemWidget(item)
             rule_widget.ui.rule.setText(updated_rule_data['ruleName'])
             rule_widget.rule_data = updated_rule_data
-
-            self.update(updated_rule_data, current_rule_data['rule_id'])
         
     def deleteRule(self):
         selected_indexes = self.ruleView.selectedItems()
@@ -91,7 +85,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print(f"\n\n{rule_data}")
 
         dialog = DeleteDialog(rule_data['ruleName'])
-        
+
         if dialog.exec() == QDialog.Accepted:
             index = self.ruleView.row(item)
             self.model.beginRemoveColumns(self.model.index(index), index, index)
@@ -119,7 +113,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     rule['sourceDir'],
                     rule['destDir']
                 )
-                print(f"Applied rule: {rule['ruleName']}")
+                # print(f"Applied rule: {rule['ruleName']}")
             except Exception as e:
                 print(f"Error applying rule {rule['ruleName']}: {e}")
 
@@ -129,8 +123,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def insertRuleIntoDB(self, ruleData):
         print()
-
-
 
     
 if __name__ == "__main__":
