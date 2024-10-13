@@ -40,7 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set up QTimer
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.run_all_rules)
-        self.timer.start(2000)
+        self.timer.start(1000)
 
     def addRule(self):
         # Add a rule to the rule file rules list 
@@ -62,16 +62,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             updated_rule_data = dialog.getRuleData()
             updated_rule_data['uuid'] = current_rule_data['uuid']
 
-            print(f"Updating with dat: {updated_rule_data}")
+            # Update rule in database
+            self.db.updateRuleInDB(updated_rule_data)
 
+            # Update the model
+            index = self.model.rules.index(current_rule_data)
+            self.model.rules[index] = updated_rule_data
+
+            # Updates the QListWidget item with new data
             item.setData(Qt.UserRole, updated_rule_data)
 
             rule_widget = self.ruleView.itemWidget(item)
             rule_widget.ui.rule.setText(updated_rule_data['ruleName'])
             rule_widget.rule_data = updated_rule_data
 
-            # Update rule in database
-            self.db.updateRuleInDB(updated_rule_data)
+
         
     def deleteRule(self):
         selected_indexes = self.ruleView.selectedItems()
