@@ -49,19 +49,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if dialog.exec():
             rule_data = dialog.getRuleData()
             if rule_data:
-                
-                # item = QListWidgetItem(self.ruleView)
-                # rule_widget = RuleItem(rule_data)
-
-                # # rule_widget.editRequested.connect(lambda data, item=item: self.editRule(item, data))
-
-                # item.setData(Qt.UserRole, rule_data)
-                # item.setSizeHint(rule_widget.sizeHint())
-
-                # self.ruleView.addItem(item)
-                # self.ruleView.setItemWidget(item, rule_widget)
-
-                # self.model.addRule(rule_data)
                 self.updateUIWithNewRule(rule_data)
 
                 # Insert into database
