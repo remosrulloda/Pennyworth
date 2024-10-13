@@ -6,6 +6,7 @@ from src.ruleItem import RuleItem
 from src.addRuleDialog import AddRuleDialog
 from src.ruleModel import RuleModel
 from src.deleteDialog import DeleteDialog
+from src.database import SQLDatabase
 
 from PySide6.QtWidgets import (
     QApplication, 
@@ -26,8 +27,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle("Pennyworth")
 
         # Create and load database
-        create_table()
-        # self.load()
+        self.db = SQLDatabase()
+        self.db.loadDataFromDB()
+
+        # UI version
+        self.loadDataFromDB()   
 
         # Connecting buttons
         self.addRuleBtn.pressed.connect(self.addRule)
@@ -46,18 +50,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             rule_data = dialog.getRuleData()
             if rule_data:
                 
-                item = QListWidgetItem(self.ruleView)
-                rule_widget = RuleItem(rule_data)
+                # item = QListWidgetItem(self.ruleView)
+                # rule_widget = RuleItem(rule_data)
 
-                rule_widget.editRequested.connect(lambda data, item=item: self.editRule(item, data))
+                # # rule_widget.editRequested.connect(lambda data, item=item: self.editRule(item, data))
 
-                item.setData(Qt.UserRole, rule_data)
-                item.setSizeHint(rule_widget.sizeHint())
+                # item.setData(Qt.UserRole, rule_data)
+                # item.setSizeHint(rule_widget.sizeHint())
 
-                self.ruleView.addItem(item)
-                self.ruleView.setItemWidget(item, rule_widget)
+                # self.ruleView.addItem(item)
+                # self.ruleView.setItemWidget(item, rule_widget)
 
-                self.model.addRule(rule_data)
+                # self.model.addRule(rule_data)
+                self.updateUIWithNewRule(rule_data)
+
+                # Insert into database
+                self.db.insertRuleIntoDB(rule_data)
 
     def editRule(self, item, current_rule_data):
         dialog = AddRuleDialog()
@@ -65,6 +73,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if dialog.exec():
             updated_rule_data = dialog.getRuleData()
+            updated_rule_data['uuid'] = current_rule_data['uuid']
 
             print(f"Updating with dat: {updated_rule_data}")
 
@@ -73,6 +82,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             rule_widget = self.ruleView.itemWidget(item)
             rule_widget.ui.rule.setText(updated_rule_data['ruleName'])
             rule_widget.rule_data = updated_rule_data
+
+            # Update rule in database
+            self.db.updateRuleInDB(updated_rule_data)
         
     def deleteRule(self):
         selected_indexes = self.ruleView.selectedItems()
@@ -95,6 +107,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.ruleView.takeItem(self.ruleView.row(item))
             self.ruleView.clearSelection()
 
+            # Delete rule from database
+            self.db.deleteRuleFromDB(rule_data['uuid'])
+
     def getSelectedRuleData(self):
         selected_items = self.ruleView.selectedItems()
         if not selected_items:
@@ -113,17 +128,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     rule['sourceDir'],
                     rule['destDir']
                 )
-                # print(f"Applied rule: {rule['ruleName']}")
             except Exception as e:
                 print(f"Error applying rule {rule['ruleName']}: {e}")
+    
+    def loadDataFromDB(self):
+        rules = self.db.loadDataFromDB()
+        for rule in rules:
+            self.updateUIWithNewRule(rule)
+
+    def updateUIWithNewRule(self, rule_data):
+        item = QListWidgetItem(self.ruleView)
+        rule_widget = RuleItem(rule_data)
+        rule_widget.editRequested.connect(lambda data, item=item: self.editRule(item, data))
+        item.setData(Qt.UserRole, rule_data)
+        item.setSizeHint(rule_widget.sizeHint())
+        self.ruleView.addItem(item)
+        self.ruleView.setItemWidget(item, rule_widget)
+        self.model.addRule(rule_data)
+
 
     def closeEvent(self, event):
         self.timer.stop()
+        self.db.closeDB()
         event.accept()
-
-    def insertRuleIntoDB(self, ruleData):
-        print()
-
     
 if __name__ == "__main__":
     app = QApplication([])

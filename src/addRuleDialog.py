@@ -12,7 +12,7 @@ class AddRuleDialog(QDialog, Ui_Dialog):
         self.setWindowTitle("Add Rule")
 
         # Rule members
-        self.rule_id = str(uuid.uuid4())
+        self.uuid = str(uuid.uuid4())
         self.ruleName = ''
         self.sourceDir = ''
         self.destDir = ''
@@ -80,7 +80,7 @@ class AddRuleDialog(QDialog, Ui_Dialog):
         self.accept()
 
     def setRuleData(self, rule_data):
-        self.rule_id = rule_data['rule_id']
+        self.uuid = rule_data['uuid']
         self.ruleName = rule_data['ruleName']
         self.sourceDir = rule_data['sourceDir']
         self.destDir = rule_data['destDir']
@@ -99,7 +99,7 @@ class AddRuleDialog(QDialog, Ui_Dialog):
     
     def getRuleData(self):
         return {
-            'rule_id': self.rule_id,
+            'uuid': self.uuid,
             'ruleName': self.ruleName,
             'sourceDir': self.sourceDir,
             'destDir': self.destDir, 
