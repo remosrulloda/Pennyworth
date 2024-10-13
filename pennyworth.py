@@ -122,7 +122,6 @@ class AddRuleDialog(QDialog, Ui_Dialog):
             self.highlightMissingFields(missing_fields)
             return
     
-        # Accept and return the rule
         self.accept()
 
     def setRuleData(self, rule_data):
@@ -194,7 +193,7 @@ class RuleModel(QAbstractListModel):
     
     def data(self, index, role):
         if role == Qt.DisplayRole or role == Qt.DecorationRole:
-            rule_data = self.rules[0]
+            rule_data = self.rules[index.row()]
             return rule_data['ruleName']
         
     def rowCount(self, index):
@@ -242,6 +241,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if dialog.exec():
             rule_data = dialog.getRuleData()
             if rule_data:
+                new_id = self.insert(rule_data)
+                rule_data['id'] = new_id
+                
                 item = QListWidgetItem(self.ruleView)
 
                 rule_widget = RuleItem(rule_data)
@@ -255,7 +257,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.ruleView.setItemWidget(item, rule_widget)
 
                 self.model.addRule(rule_data)
-                self.save()
+                
 
     def edit(self, item, current_rule_data):
         dialog = AddRuleDialog()
@@ -270,6 +272,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             rule_widget.ui.rule.setText(updated_rule_data['ruleName'])
             rule_widget.rule_data = updated_rule_data
 
+            self.update(updated_rule_data, current_rule_data['id'])
         
     def delete(self):
         selected_indexes = self.ruleView.selectedItems()
@@ -277,20 +280,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         item = selected_indexes[0]
-        rule_name = item.text()
+        rule_data = item.data(Qt.UserRole)
 
-        dialog = DeleteDialog(rule_name)
+        print(f"\n\n{rule_data}")
+
+        rule_id = rule_data['id']
+
+        dialog = DeleteDialog(rule_data['ruleName'])
         if dialog.exec() == QDialog.Accepted:
-            index = self.ruleView.row(item)
+            # Delete from the database
+            self.deleteRulefromDB(rule_id)
 
+            index = self.ruleView.row(item)
             self.model.beginRemoveColumns(self.model.index(index), index, index)
             del self.model.rules[index]
             self.model.endRemoveRows()
 
             self.ruleView.takeItem(self.ruleView.row(item))
-            self.save()
             self.ruleView.clearSelection()
-
 
     def getSelectedRuleData(self):
         selected_items = self.ruleView.selectedItems()
@@ -308,7 +315,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 cursor.execute("SELECT * FROM rules")
                 rows = cursor.fetchall()  # Fetch all rows from the executed query
                 
-                print(f"Total rows fetched: {len(rows)}")  # Debugging output
+                print(f"Total rules fetched: {len(rows)}")  # Debugging output
                 
                 self.model.rules.clear()
                 self.ruleView.clear() 
@@ -317,6 +324,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     print(f"Processing row: {row}")  # Debugging output
                     
                     rule_data = {
+                        'id': row[0],
                         'ruleName': row[1],
                         'sourceDir': row[2],
                         'destDir': row[3],
@@ -334,25 +342,85 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     item.setSizeHint(rule_widget.sizeHint())
                     self.ruleView.addItem(item)
                     self.ruleView.setItemWidget(item, rule_widget)
+                    rule_widget.editRequested.connect(lambda data, item=item: self.edit(item, data))
 
         except sqlite3.Error as e:
             print(f"Error loading rules: {e}")
 
 
-    def save(self):
+    def insert(self, rule_id):
         with sqlite3.connect("rules.db") as conn:
             cursor = conn.cursor()
-            cursor.execute("DELETE FROM rules")
+            
             for rule in self.model.rules:
                 cursor.execute(
                 '''
-                    INSERT INTO rules (rule_name, source_dir, dest_dir, file_attribute, comparison_operator, comparison_value, action_to_take)
+                    INSERT INTO rules (
+                        rule_name, 
+                        source_dir, 
+                        dest_dir, 
+                        file_attribute, 
+                        comparison_operator, 
+                        comparison_value, 
+                        action_to_take
+                    )
                     VALUES (?, ?, ?, ?, ?, ?, ?)
-                ''', (rule['ruleName'], rule['sourceDir'], rule['destDir'], rule['fileAttribute'],
-                    rule['comparisonOperator'], rule['comparisonValue'], rule['actionToTake']))
-            
+                ''', (
+                    rule['ruleName'], 
+                    rule['sourceDir'], 
+                    rule['destDir'], 
+                    rule['fileAttribute'],
+                    rule['comparisonOperator'], 
+                    rule['comparisonValue'], 
+                    rule['actionToTake'],
+                )
+            )
+            new_id = cursor.lastrowid
             conn.commit()
 
+            return new_id
+
+    def update(self, updated_rule_data, rule_id):
+        try:
+            with sqlite3.connect("rules.db") as conn:
+                cursor = conn.cursor()
+
+                cursor.execute(
+                    '''
+                    UPDATE rules
+                    SET rule_name = ?, source_dir = ?, dest_dir = ?, file_attribute = ?, 
+                    comparison_operator = ?, comparison_value = ?, action_to_take = ?
+                    WHERE id = ?
+                    ''', (
+                        updated_rule_data['ruleName'], 
+                        updated_rule_data['sourceDir'], 
+                        updated_rule_data['destDir'], 
+                        updated_rule_data['fileAttribute'], 
+                        updated_rule_data['comparisonOperator'], 
+                        updated_rule_data['comparisonValue'], 
+                        updated_rule_data['actionToTake'], 
+                        rule_id
+                    )
+                )
+                conn.commit()
+                print(f"Updated rule with id {rule_id}")
+        except sqlite3.Error as e:
+            print(f"Error updating rule in database: {e}")
+    
+    def deleteRulefromDB(self, rule_id):
+        try:
+            with sqlite3.connect("rules.db") as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    '''
+                    DELETE FROM rules WHERE id = ?
+                    ''', (rule_id,)
+                )
+                conn.commit()
+                print(f"Deleted rule with {rule_id}")
+        except sqlite3.Error as e:
+            print(f"Error deleting rule from database: {e}")
+            
     
 if __name__ == "__main__":
     app = QApplication([])
