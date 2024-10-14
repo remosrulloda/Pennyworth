@@ -12,9 +12,12 @@ from PySide6.QtWidgets import (
     QApplication, 
     QMainWindow, 
     QDialog, 
-    QListWidgetItem
+    QListWidgetItem,
+    QSystemTrayIcon,
+    QMenu
 )
 from PySide6.QtCore import Qt, QTimer
+from PySide6.QtGui import QAction, QIcon
 
 from ui.ui_mainwindow import Ui_MainWindow
 
@@ -41,6 +44,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.run_all_rules)
         self.timer.start(1000)
+
+        self.rules_paused = False
+
+        self.init_tray()
+
+    def init_tray(self):
+        self.tray_icon = QSystemTrayIcon(QIcon("icon.png"), self)
+        self.tray_icon.setVisible(True)
+
+        tray_menu = QMenu(self)
+
+        # Open action
+        openApp = QAction("Open", self)
+        openApp.triggered.connect(self.show)
+        tray_menu.addAction(openApp)
+
+        self.trayPauseAction = QAction("Pause", self)
+        self.trayPauseAction.triggered.connect(self.pauseRules)
+        tray_menu.addAction(self.trayPauseAction)
+
+        quitApp = QAction("Quit", self)
+        quitApp.triggered.connect(QApplication.quit)
+        tray_menu.addAction(quitApp)
+
+        self.tray_icon.setContextMenu(tray_menu)
+
+    def pauseRules(self):
+        if self.rules_paused:
+            self.timer.start(1000)
+            self.trayPauseAction.setText("Pause")
+        else:
+            self.timer.stop()
+            self.trayPauseAction.setText("Resume")
+        
+        self.rules_paused = not self.rules_paused
+
 
     def addRule(self):
         # Add a rule to the rule file rules list 
@@ -161,5 +200,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 if __name__ == "__main__":
     app = QApplication([])
     window = MainWindow()
-    window.show()
+    app.setQuitOnLastWindowClosed(False)
     sys.exit(app.exec())
