@@ -1,4 +1,4 @@
-import sys
+import sys, os
 
 from src.database import *
 from src.moveFile import move_file
@@ -21,6 +21,15 @@ from PySide6.QtGui import QAction, QIcon
 
 from ui.ui_mainwindow import Ui_MainWindow
 
+basedir = os.path.dirname(__file__)
+
+try:
+    from ctypes import windll
+
+    myappid = "remosrulloda.pennyworth.subproduct.0"
+    windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+except ImportError:
+    pass
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -50,7 +59,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.init_tray()
 
     def init_tray(self):
-        self.tray_icon = QSystemTrayIcon(QIcon("icon.png"), self)
+        self.tray_icon = QSystemTrayIcon(QIcon(os.path.join(basedir, "icon.ico")), self)
         self.tray_icon.setVisible(True)
 
         tray_menu = QMenu(self)
@@ -203,6 +212,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     
 if __name__ == "__main__":
     app = QApplication([])
+    app.setWindowIcon(QIcon(os.path.join(basedir, "icon.ico")))
     window = MainWindow()
     app.setQuitOnLastWindowClosed(False)
     sys.exit(app.exec())
