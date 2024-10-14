@@ -198,6 +198,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def activate(self, reason):
         if reason == QSystemTrayIcon.Trigger:
             self.show()
+            self.activateWindow()
+            self.raise_()
     
 if __name__ == "__main__":
     app = QApplication([])
