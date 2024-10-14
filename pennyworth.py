@@ -55,10 +55,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         tray_menu = QMenu(self)
 
-        # Open action
-        openApp = QAction("Open", self)
-        openApp.triggered.connect(self.show)
-        tray_menu.addAction(openApp)
+        self.tray_icon.activated.connect(self.activate)
 
         self.trayPauseAction = QAction("Pause", self)
         self.trayPauseAction.triggered.connect(self.pauseRules)
@@ -67,6 +64,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         quitApp = QAction("Quit", self)
         quitApp.triggered.connect(QApplication.quit)
         tray_menu.addAction(quitApp)
+
+
 
         self.tray_icon.setContextMenu(tray_menu)
 
@@ -195,7 +194,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 active_rules.append(rule_widget.rule_data)
 
         return active_rules
-        
+    
+    def activate(self, reason):
+        if reason == QSystemTrayIcon.Trigger:
+            self.show()
     
 if __name__ == "__main__":
     app = QApplication([])
