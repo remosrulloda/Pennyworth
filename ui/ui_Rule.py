@@ -22,7 +22,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(299, 76)
+        Form.resize(300, 63)
         self.gridLayout_2 = QGridLayout(Form)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout = QGridLayout()
@@ -32,16 +32,22 @@ class Ui_Form(object):
         font = QFont()
         font.setPointSize(12)
         self.rule.setFont(font)
+        self.rule.setStyleSheet(u"QCheckBox {\n"
+"    spacing: 10px; /* Adjusts spacing between checkbox and label */\n"
+"}\n"
+"\n"
+"")
 
         self.gridLayout.addWidget(self.rule, 0, 0, 1, 1)
 
         self.editRuleBtn = QPushButton(Form)
         self.editRuleBtn.setObjectName(u"editRuleBtn")
-        self.editRuleBtn.setMaximumSize(QSize(32, 48))
+        self.editRuleBtn.setMaximumSize(QSize(30, 30))
         font1 = QFont()
         font1.setPointSize(10)
         self.editRuleBtn.setFont(font1)
         self.editRuleBtn.setStyleSheet(u"")
+        self.editRuleBtn.setIconSize(QSize(30, 20))
         self.editRuleBtn.setFlat(False)
 
         self.gridLayout.addWidget(self.editRuleBtn, 0, 1, 1, 1)
@@ -58,6 +64,6 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.rule.setText(QCoreApplication.translate("Form", u"ruleName", None))
-        self.editRuleBtn.setText(QCoreApplication.translate("Form", u"edit", None))
+        self.editRuleBtn.setText(QCoreApplication.translate("Form", u"Edit", None))
     # retranslateUi
 

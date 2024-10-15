@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>299</width>
-    <height>76</height>
+    <width>300</width>
+    <height>63</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,6 +23,13 @@
          <pointsize>12</pointsize>
         </font>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox {
+    spacing: 10px; /* Adjusts spacing between checkbox and label */
+}
+
+</string>
+       </property>
        <property name="text">
         <string>ruleName</string>
        </property>
@@ -32,8 +39,8 @@
       <widget class="QPushButton" name="editRuleBtn">
        <property name="maximumSize">
         <size>
-         <width>32</width>
-         <height>48</height>
+         <width>30</width>
+         <height>30</height>
         </size>
        </property>
        <property name="font">
@@ -45,7 +52,13 @@
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>edit</string>
+        <string>Edit</string>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>30</width>
+         <height>20</height>
+        </size>
        </property>
        <property name="flat">
         <bool>false</bool>
