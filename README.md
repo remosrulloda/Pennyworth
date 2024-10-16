@@ -50,7 +50,7 @@
 
 2. Activate the venv 
     ```bash
-    source .venv/bin/activate 
+    source venv/bin/activate 
     ```
 
 3. Run the app:
@@ -70,6 +70,7 @@ If you download images from a specific website, **Pennyworth** can automatically
 
 ## Future Enhancements
 
+- *Coming soon*: Application installation packages for Linux, macOS, and Windows
 - More advanced rule customization
 - Better GUI for easier rule creation and management
 

@@ -59,12 +59,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.init_tray()
 
     def init_tray(self):
-        self.tray_icon = QSystemTrayIcon(QIcon(os.path.join(basedir, "icon.ico")), self)
+        self.tray_icon = QSystemTrayIcon(QIcon(os.path.join(basedir, "pennyworth.ico")), self)
         self.tray_icon.setVisible(True)
 
         tray_menu = QMenu(self)
 
         self.tray_icon.activated.connect(self.activate)
+
+        self.tray_icon.showMessage(
+            "Pennyworth", "Pennyworth is running in the system tray", QSystemTrayIcon.Information, 3000
+        )
 
         self.trayPauseAction = QAction("Pause", self)
         self.trayPauseAction.triggered.connect(self.pauseRules)
@@ -73,8 +77,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         quitApp = QAction("Quit", self)
         quitApp.triggered.connect(QApplication.quit)
         tray_menu.addAction(quitApp)
-
-
 
         self.tray_icon.setContextMenu(tray_menu)
 
@@ -212,7 +214,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     
 if __name__ == "__main__":
     app = QApplication([])
-    app.setWindowIcon(QIcon(os.path.join(basedir, "icon.ico")))
+    app.setWindowIcon(QIcon(os.path.join(basedir, "pennyworth.ico")))
     window = MainWindow()
     app.setQuitOnLastWindowClosed(False)
     sys.exit(app.exec())

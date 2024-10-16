@@ -30,6 +30,23 @@ class AddRuleDialog(QDialog, Ui_Dialog):
         self.ui.ruleNameEdit.textChanged.connect(lambda: self.onInputChange('ruleName'))
         self.ui.lineEdit.textChanged.connect(lambda: self.onInputChange('comparisonValue'))
 
+        self.verbOptions = ["is", "contains", "begins with"]
+
+        self.ui.ruleComboBox.addItems(["File", "Extension"])
+        self.ui.verbComboBox.addItems(self.verbOptions)
+    
+        self.ui.ruleComboBox.currentIndexChanged.connect(self.ruleChange)
+
+    def ruleChange(self):
+        selected_item = self.ui.ruleComboBox.currentText()
+        self.ui.verbComboBox.clear()
+
+        if selected_item == "File":
+            self.ui.verbComboBox.addItems(self.verbOptions)
+        elif selected_item == "Extension":
+            self.ui.verbComboBox.addItem("is")
+
+
     def addSourceDir(self):
         sourceName = QFileDialog.getExistingDirectory()
         if sourceName:

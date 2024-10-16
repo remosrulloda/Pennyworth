@@ -78,16 +78,11 @@ class Ui_Dialog(object):
         self.horizontalLayout_3 = QHBoxLayout(self.ifViewer)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.ruleComboBox = QComboBox(self.ifViewer)
-        self.ruleComboBox.addItem("")
-        self.ruleComboBox.addItem("")
         self.ruleComboBox.setObjectName(u"ruleComboBox")
 
         self.horizontalLayout_3.addWidget(self.ruleComboBox)
 
         self.verbComboBox = QComboBox(self.ifViewer)
-        self.verbComboBox.addItem("")
-        self.verbComboBox.addItem("")
-        self.verbComboBox.addItem("")
         self.verbComboBox.setObjectName(u"verbComboBox")
 
         self.horizontalLayout_3.addWidget(self.verbComboBox)
@@ -186,13 +181,6 @@ class Ui_Dialog(object):
         self.sourceBtn.setText(QCoreApplication.translate("Dialog", u"Folder Source", None))
         self.folderSourceLabel.setText("")
         self.ifLabel.setText(QCoreApplication.translate("Dialog", u"If any of the following conditions are met:", None))
-        self.ruleComboBox.setItemText(0, QCoreApplication.translate("Dialog", u"File", None))
-        self.ruleComboBox.setItemText(1, QCoreApplication.translate("Dialog", u"Extension", None))
-
-        self.verbComboBox.setItemText(0, QCoreApplication.translate("Dialog", u"contains", None))
-        self.verbComboBox.setItemText(1, QCoreApplication.translate("Dialog", u"is", None))
-        self.verbComboBox.setItemText(2, QCoreApplication.translate("Dialog", u"begins with", None))
-
         self.thenLabel.setText(QCoreApplication.translate("Dialog", u"Do the following to the matched folder:", None))
         self.destBtn.setText(QCoreApplication.translate("Dialog", u"Choose Folder", None))
         self.actionComboBox.setItemText(0, QCoreApplication.translate("Dialog", u"Move", None))
