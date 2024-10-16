@@ -1,3 +1,7 @@
 .venv/
 venv/
 rules.db
+dist
+build
+package
+.spec
