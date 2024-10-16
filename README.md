@@ -43,16 +43,26 @@
 
 ## Usage
 
-1. Run the app:
+1. Create the virtual environment
+    ```bash
+    python -m venv /path/to/new/virtual/environment
+    ```
+
+2. Activate the venv 
+    ```bash
+    source .venv/bin/activate 
+    ```
+
+3. Run the app:
 
     ```bash
     python pennyworth.py
     ```
 
-2. Define your sorting rules:
+4. Define your sorting rules:
    - You can specify rules for different folders based on file names, extensions, or the source of download.
    
-3. Let **Pennyworth** take care of your files by automating the sorting and organization process.
+5. Let **Pennyworth** take care of your files by automating the sorting and organization process.
 
 ## Example
 
