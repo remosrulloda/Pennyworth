@@ -21,6 +21,9 @@ from PySide6.QtGui import QAction, QIcon
 
 from ui.ui_mainwindow import Ui_MainWindow
 
+if getattr(sys, 'frozen', False):
+    os.chdir(sys._MEIPASS)
+
 basedir = os.path.dirname(__file__)
 
 try:
@@ -59,7 +62,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.init_tray()
 
     def init_tray(self):
-        self.tray_icon = QSystemTrayIcon(QIcon(os.path.join(basedir, "pennyworth.ico")), self)
+        self.tray_icon = QSystemTrayIcon(QIcon(os.path.join(basedir, "icons/pennyworth.ico")), self)
         self.tray_icon.setVisible(True)
 
         tray_menu = QMenu(self)
@@ -214,7 +217,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     
 if __name__ == "__main__":
     app = QApplication([])
-    app.setWindowIcon(QIcon(os.path.join(basedir, "pennyworth.ico")))
+    app.setWindowIcon(QIcon(os.path.join(basedir, "icons/pennyworth.ico")))
     window = MainWindow()
     app.setQuitOnLastWindowClosed(False)
     sys.exit(app.exec())
